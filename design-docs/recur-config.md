@@ -15,7 +15,7 @@ We're using yaml since it's very human readable, easy to write and easy to read 
     * `multiplier` (positive integer) - multiplies the given `recur.every.period`.
     * `period` (`"day" | "week" | "month" | "year"`) - recurring period
   * `on` - recurring day config
-    * `day` - `1 <= recur.on.day <= recur.every.period * recur.every.multiplier`
+    * `day` (positive integer) - `1 <= recur.on.day <= recur.every.period * recur.every.multiplier`
 
 ## Examples:
 
