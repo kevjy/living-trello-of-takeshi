@@ -1,0 +1,32 @@
+{
+  "name": "recur",
+  "version": "0.0.1",
+  "description": "module to create recurring trello cards",
+  "main": "index.js",
+  "scripts": {
+    "develop": "nodemon --exec babel-node src/index.js",
+    "build": "./node_modules/.bin/babel src --out-dir build",
+    "prebuild": "rm -rf build/*",
+    "start": "NODE_ENV=production node ./build/index.js",
+    "prestart": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/philjung94/living-trello-of-takeshi"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jsonschema": "^1.2.4",
+    "moment": "^2.24.0",
+    "yaml": "^1.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "nodemon": "^1.19.1"
+  }
+}
