@@ -12,6 +12,7 @@ export default buildSchema(`
   type List {
     id: ID!
     name: String!
+    desc: String!
     cards: [Card!]!
   }
   type Card {

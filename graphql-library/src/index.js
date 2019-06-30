@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import {graphql} from 'graphql'
 import schema from './schema'
 import resolvers from './resolvers'
@@ -10,8 +9,10 @@ const query = `
     board(id:"Btjbcfio") {
       lists {
         id
+        name
         cards {
           id
+          name
           desc
         }
       }
@@ -19,4 +20,4 @@ const query = `
   }
 `
 
-graphql(schema, query, resolvers, {Trello}).then(result => result.data).then(console.log)
+graphql(schema, query, resolvers, {Trello}).then(result => result.data).then(JSON.stringify).then(console.log)

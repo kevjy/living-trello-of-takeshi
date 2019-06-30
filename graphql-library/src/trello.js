@@ -18,6 +18,10 @@ export default {
   },
 }
 
+/**
+ * Parses the query string to ensure that excess chars are removed before passing it back to Trello.call
+ * @param {String} query - the endpoint string without hostname, e.g. "/boards"
+ */
 export function sanitizeEnds(query) {
   let qs = query
   if (query.charAt(0) === '/') {
@@ -29,7 +33,14 @@ export function sanitizeEnds(query) {
   return qs
 }
 
+/** 
+ * Appends the key and token to the query string. 
+ * @param {String} key, token - credentials for Trello API
+ */
 export function addAuth(key, token) {
+  /**
+   * @param {String} query - the endpoint string without hostname, e.g. "/boards"
+   */
   return (query) => {
     let qs = query
     qs += `${qs.includes('?')? '&':'?'}key=${key}&token=${token}&card_limit=1000`
@@ -37,7 +48,13 @@ export function addAuth(key, token) {
   }
 }
 
+/**
+ * Receives the Promise executor callbacks resolve & reject
+ * Returns the callback for handling the https GET request
+ * @param {Function} resolve, reject - from Promise
+ */
 export function withHandler(resolve, reject) {
+  // @param {Object} res - Response object returned from https.get
   return function callback(res) {
     const { statusCode } = res
     const contentType = res.headers['content-type']
