@@ -21,6 +21,8 @@ describe('addAuth', () => {
   })
 })
 
-describe('withHandler' () => {
-  
+describe('withHandler', () => {
+  it('should throw an error for not passing a function to resolve and reject', () => {
+    expect(() => withHandler('','')).toThrow()
+  })
 })
