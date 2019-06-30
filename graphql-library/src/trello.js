@@ -55,6 +55,9 @@ export function addAuth(key, token) {
  */
 export function withHandler(resolve, reject) {
   // @param {Object} res - Response object returned from https.get
+  if (![resolve, reject].every(f => typeof f === 'function')) {
+    throw new Error('resolve and reject must be functions, intended to be derived from a Promise executor.')
+  }
   return function callback(res) {
     const { statusCode } = res
     const contentType = res.headers['content-type']

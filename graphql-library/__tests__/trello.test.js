@@ -20,3 +20,7 @@ describe('addAuth', () => {
     expect(addAuth('MY_KEY','MY_TOKEN')('')).toEqual('?key=MY_KEY&token=MY_TOKEN&card_limit=1000')
   })
 })
+
+describe('withHandler' () => {
+  
+})
