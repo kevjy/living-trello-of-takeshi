@@ -36,4 +36,3 @@ const LivingTrello = (function(Trello, graphql, schema, resolvers) {
 })(Trello, graphql, schema, resolvers)
 
 export default LivingTrello
-

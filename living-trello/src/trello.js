@@ -9,7 +9,7 @@ export default class Trello {
   call(query) {
     const {sanitizeEnds, withHandler} = this
     const requestURL = `https://api.trello.com/1/${sanitizeEnds(query)}?key=${this.key}&token=${this.token}&card_limit=1000`
-    return new Promise(this.requestExecutor.bind(requestURL))
+    return new Promise(this.requestExecutor.bind(null, requestURL))
   }
   /**
    * Parses the query string to ensure that excess chars are removed before passing it back to Trello.call
@@ -31,7 +31,6 @@ export default class Trello {
    * @param {Function} resolve, reject - from Promise
    */
   requestExecutor(requestURL, resolve, reject) {
-    return https.get(requestURL, callback)
     function callback(res) {
       const { statusCode } = res
       const contentType = res.headers['content-type']
@@ -54,5 +53,6 @@ export default class Trello {
         }
       })
     }
+    return https.get(requestURL, callback)
   }
 }
