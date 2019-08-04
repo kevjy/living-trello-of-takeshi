@@ -24,6 +24,7 @@ We're using yaml since it's very human readable, easy to write and easy to read 
 ```yaml
 recur:
   every:
+    multiplier: 1
     period: "week"
   on:
     day: 1
