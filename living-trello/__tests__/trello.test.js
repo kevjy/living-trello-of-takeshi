@@ -1,4 +1,6 @@
-import {sanitizeEnds, addAuth} from '../src/trello'
+import Trello from '../src/trello'
+const t = new Trello('MY_KEY','MY_TOKEN')
+const {sanitizeEnds, addAuth, withHandler} = t
 
 describe('sanitizeEnds', () => {
   it('should return empty string given an empty string', () => {
@@ -12,12 +14,6 @@ describe('sanitizeEnds', () => {
   })
   it('should return an empty string given "/&"', () => {
     expect(sanitizeEnds('/&')).toEqual('')
-  })
-})
-
-describe('addAuth', () => {
-  it('should add key: MY_KEY, token: MY_TOKEN', () => {
-    expect(addAuth('MY_KEY','MY_TOKEN')('')).toEqual('?key=MY_KEY&token=MY_TOKEN&card_limit=1000')
   })
 })
 
