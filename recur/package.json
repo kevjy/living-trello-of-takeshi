@@ -20,7 +20,8 @@
   "dependencies": {
     "jsonschema": "^1.2.4",
     "moment": "^2.24.0",
-    "yaml": "^1.6.0"
+    "yaml": "^1.6.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
