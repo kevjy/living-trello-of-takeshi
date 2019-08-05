@@ -11,7 +11,7 @@ import {parse} from './parser'
  */
 function week(begin, on, mult) {
   return date =>
-    (on === date.day()) && (begin.week() % mult === date.week() % mult)
+    (on % 7 === date.day()) && (begin.week() % mult === date.week() % mult)
 }
 
 /**

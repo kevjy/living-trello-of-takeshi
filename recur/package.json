@@ -4,6 +4,7 @@
   "description": "module to create recurring trello cards",
   "main": "index.js",
   "scripts": {
+    "predevelop": "(cd ../living-trello && npm run build)",
     "develop": "nodemon --exec babel-node src/index.js",
     "build": "./node_modules/.bin/babel src --out-dir build",
     "prebuild": "rm -rf build/*",
@@ -19,9 +20,10 @@
   "license": "MIT",
   "dependencies": {
     "jsonschema": "^1.2.4",
+    "living-trello": "file:../living-trello",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "yaml": "^1.6.0",
-    "lodash": "^4.17.15"
+    "yaml": "^1.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
