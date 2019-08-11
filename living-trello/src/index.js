@@ -1,4 +1,4 @@
-/*
+/**
  * Library Example Usage
  * =====================
  * import 'dotenv/config'
@@ -9,30 +9,39 @@
  * lt.query(myQuery).then(console.log) // returns a promise.
  */
 
-import {graphql} from 'graphql'
-import schema from './schema'
-import resolvers from './resolvers'
+import { graphql } from 'graphql'
+import query from './query'
+import mutate from './mutate'
 import Trello from './trello'
 
-const LivingTrello = (function(Trello, graphql, schema, resolvers) {
+const LivingTrello = (
 
-  var t
+  // Deny access to our Trello Node.js interface. It's intended for use via GraphQL interface. 
+  function closure( Trello, graphql, query, mutate ) {
 
-  function lt(key, token) {
-    t = new Trello(key, token) // Deny access to our Trello Node.js interface. It's intended for use via GraphQL interface. 
-  }
+    var t
+    const ops = {query, mutate} // Each op is an Object with nested documents {schema: Schema, resolvers: Resolvers}
 
-  // GraphQL Interface below.
-  lt.prototype.query = function query(q) {
-    if (t) {
-      return graphql(schema, q, resolvers, {Trello: t}).then(({data}) => data)
-    } else {
-      throw new Error('Must set key and token to authenticate Trello via constructor(key, token).')
+    function lt(key, token) {
+      t = new Trello(key, token) 
     }
+
+    Object.entries(ops).forEach(([key, {schema, resolvers}]) => {
+      lt.prototype[key] = function(q) {
+        if (t) {
+          return graphql(schema, q, resolvers, {Trello: t})
+            .then(({data}) => data)
+            .catch(console.error)
+        } else {
+          throw new Error('Must set key and token to authenticate Trello via constructor(key, token).')
+        }
+      }
+    })
+
+    return lt
+
   }
 
-  return lt
-
-})(Trello, graphql, schema, resolvers)
+)( Trello, graphql, query, mutate )
 
 export default LivingTrello

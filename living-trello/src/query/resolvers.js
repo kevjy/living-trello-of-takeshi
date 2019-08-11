@@ -1,12 +1,17 @@
 export default {
-  // Query Resolvers (camel)
-  ping: () => 'Living Trello of Takeshi: GraphQL API v0.0.1',
-  board: ({id}, {Trello}) => 
+
+  ping: () => (
+   'Living Trello of Takeshi: GraphQL API v0.0.1'
+  ),
+
+  board: ({id}, {Trello}) => (
     Trello.call(`/boards/${id}/lists`)
       .then(filterOutNonRecurringLists)
       .then(lists => Promise.all(lists.map(getCardsInList(Trello))))
       .then(lists => ({lists}))
-      .catch(console.error),
+      .catch(console.error)
+  ),
+
 }
 
 /**
@@ -26,8 +31,8 @@ function getCardsInList(Trello) {
 }
 
 /**
- * Deconstructs an object to its properties id, name, and desc.
+ * Destructures an object to its properties id, name, and desc.
  */
-function idProps({id, name, desc}) {
+function idProps({id, name, desc = ''}) {
   return {id, name, desc}
 }

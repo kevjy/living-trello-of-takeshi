@@ -1,36 +1,67 @@
 import https from 'https'
+import qs from 'qs'
 const {TRELLO_OAUTH_TOKEN, TRELLO_API_KEY, TRELLO_BOARD_ID} = process.env
 
 export default class Trello {
+
   constructor(key, token) {
     this.key = key
     this.token = token
+    this.urlFrom = this.urlFrom.bind(this)
   }
-  call(query) {
-    const {sanitizeEnds, withHandler} = this
-    const requestURL = `https://api.trello.com/1/${sanitizeEnds(query)}?key=${this.key}&token=${this.token}&card_limit=1000`
-    return new Promise(this.requestExecutor.bind(null, requestURL))
+
+  /**
+   * @param {String || Object} input
+   * If first arg type String then it performs a GET request to that path under Trello API
+   * If first arg type Object
+   *  @property {String} path - Endpoint path for Trello API
+   *  @property {String} method - 'GET', 'POST' etc.
+   *  @property {Object} body - optional JSON payload
+   *  @property {Object} qs - querystring object
+   */
+  call(input) {
+    const { path = '', method = 'GET', body = null, qs = {} } = input
+    const url = this.urlFrom(path || input, qs)
+    return new Promise(
+      this.requestExecutor.bind(
+        null, 
+        {
+          url, 
+          method, 
+          body
+        }
+      )
+    ).catch(console.error)
   }
+
   /**
    * Parses the query string to ensure that excess chars are removed before passing it back to Trello.call
-   * @param {String} query - the endpoint string without hostname, e.g. "/boards"
+   * @param {String} path - the endpoint string without hostname, e.g. "/boards"
    */
-  sanitizeEnds(query) {
-    let qs = query
-    if (query.charAt(0) === '/') {
-      qs = query.slice(1)
-    }
-    if (['&','?'].some(char => char === qs.charAt(qs.length-1))) {
-      qs = qs.slice(0, qs.length-1)
-    }
-    return qs
+  urlFrom(path, query) {
+    if (!path) throw new Error('Path must be a valid string.')
+    if (path.includes('?')) throw new Error('Use "qs" param to handle queries, not the path.')
+    return (
+      `https://api.trello.com/1/${path}?${
+        qs.stringify({
+          ...query,
+          key: this.key,
+          token: this.token,
+          card_limit: 1000
+        })
+      }`
+    )
   }
+
   /**
-   * Promise executor with resolve & reject callbacks
-   * Returns the callback for handling the https GET request
+   * Bind the options to return a Promise executor with resolve & reject callbacks for any HTTP method.
+   * @param {Object} options - HTTPS request options
+   *   @property {String} url - full string url for the request
+   *   @property {String} method - HTTP method, e.g. GET, POST
+   *   @property {Object} body - if any, include the JSON payload
    * @param {Function} resolve, reject - from Promise
    */
-  requestExecutor(requestURL, resolve, reject) {
+  requestExecutor({url, method, body}, resolve, reject) {
     function callback(res) {
       const { statusCode } = res
       const contentType = res.headers['content-type']
@@ -53,6 +84,14 @@ export default class Trello {
         }
       })
     }
-    return https.get(requestURL, callback)
+    const request = https.request(
+      url,
+      {
+        method
+      },
+      callback
+    )
+    if (body) request.write(JSON.stringify(body))
+    request.end()
   }
 }
