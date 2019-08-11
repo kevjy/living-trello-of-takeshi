@@ -1,9 +1,15 @@
 import moment from 'moment'
 import dateSet from './date-set'
+import createCardsQuery from './mutate'
 import LT from 'living-trello'
 import 'array-flat-polyfill'
 
-const {TRELLO_API_KEY, TRELLO_OAUTH_TOKEN, TRELLO_BOARD_ID} = process.env
+const {
+  TRELLO_API_KEY,
+  TRELLO_OAUTH_TOKEN,
+  TRELLO_BOARD_ID,
+  TRELLO_TODO_LIST_ID
+} = process.env
 const lt = new LT(TRELLO_API_KEY, TRELLO_OAUTH_TOKEN)
 
 function main() {
@@ -13,6 +19,7 @@ function main() {
   getRecurringCards(TRELLO_BOARD_ID)
     .then(filterCards(now))
     .then(createRecurredCards)
+    .then(console.log)
     .catch(err => console.log(err))
 }
 
@@ -57,8 +64,8 @@ function filterCards(date) {
  * @param {Object[]} cards - Array of recurring cards
  */
 function createRecurredCards(cards) {
-  // TODO: Replace with graphql query to create new cards for each recurring
-  console.log(cards)
+  const mutate = createCardsQuery(TRELLO_TODO_LIST_ID, cards)
+  return lt.mutate(mutate)
 }
 
 main()
