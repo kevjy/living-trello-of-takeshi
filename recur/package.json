@@ -9,7 +9,7 @@
     "build": "./node_modules/.bin/babel src --out-dir build",
     "prebuild": "rm -rf build/*",
     "start": "NODE_ENV=production node ./build/index.js",
-    "prestart": "npm run build",
+    "prestart": "npm run build && (cd ../living-trello && npm run build)",
     "test": "jest"
   },
   "repository": {

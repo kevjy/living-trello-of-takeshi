@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+- '10'
+install: "(cd recur && npm i) && (cd living-trello && npm i)"
+script: "(cd recur && npm run start)"
