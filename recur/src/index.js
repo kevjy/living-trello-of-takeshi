@@ -1,6 +1,7 @@
 import moment from 'moment'
 import dateSet from './date-set'
 import LT from 'living-trello'
+import 'array-flat-polyfill'
 
 const {TRELLO_API_KEY, TRELLO_OAUTH_TOKEN, TRELLO_BOARD_ID} = process.env
 const lt = new LT(TRELLO_API_KEY, TRELLO_OAUTH_TOKEN)

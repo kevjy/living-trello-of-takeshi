@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "array-flat-polyfill": "^1.0.1",
     "jsonschema": "^1.2.4",
     "living-trello": "file:../living-trello",
     "lodash": "^4.17.15",
