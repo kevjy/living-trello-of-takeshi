@@ -4,10 +4,10 @@
   "description": "module to create recurring trello cards",
   "main": "index.js",
   "scripts": {
-    "predevelop": "(cd ../living-trello && npm run build)",
+    "predevelop": "npm run build",
     "develop": "nodemon --exec babel-node src/index.js",
     "build": "./node_modules/.bin/babel src --out-dir build",
-    "prebuild": "rm -rf build/*",
+    "prebuild": "rm -rf build/* && (cd ../living-trello && npm run build)",
     "start": "NODE_ENV=production node ./build/index.js",
     "prestart": "npm run build",
     "test": "jest"
